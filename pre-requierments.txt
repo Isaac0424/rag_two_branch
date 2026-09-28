@@ -1,0 +1,11 @@
+ragas
+python-dotenv
+langchain 
+langchain-openai 
+langchain-core
+langchain-text-splitters
+langchain-community
+langchain-chroma
+chromadb
+pypdf
+datasets
