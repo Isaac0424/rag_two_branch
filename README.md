@@ -10,7 +10,7 @@ LangChain 기반 RAG 실습 저장소 (LangChain 1.x · ragas 0.4.3)
 | [점과 선의 지도](https://claude.ai/artifact/CaB5euy1LjdRezZoYb4Ccy) | 지식 그래프 vs 임베딩: 같은 문서 조각을 두 지도로 바꿔 보며 질문별 검색 결과 비교 |
 | [Ragas 평가 노트](https://claude.ai/artifact/VMXNbTqR7yRBzugs9Nst5r) | ragas 생성·평가 흐름, 지표 진단, ContextPrecision 계산기, 테스트셋 검증 퍼널 |
 
-> 링크는 비공개 상태입니다. 다른 사람과 보려면 각 페이지의 **Share** 메뉴에서 공유하세요.
+> 공개 범위는 각 페이지의 **Share** 메뉴에서 정합니다. 비공개인 페이지는 공유하기 전까지 다른 사람이 열 수 없습니다.
 
 ## 📁 구성
 
