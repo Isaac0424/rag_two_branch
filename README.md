@@ -163,6 +163,53 @@ data/          실습 문서(PDF, txt, db)와 생성된 테스트셋
 
 “문서에 없는 질문”(정답 = “확인할 수 없습니다”)은 Recall 계산에서 **제외**합니다.
 
+## ragas 0.4.3 지표 전체
+
+실습에서 쓴 4개(✅)는 가장 기본 세트입니다. `ragas.metrics.collections` 에는 30개가 넘는 지표가 있습니다.
+
+### RAG 검색 (Retrieval)
+
+| 지표 | 무엇을 보나 | 정답 필요 |
+|---|---|---|
+| **ContextRecall** ✅ | 정답에 필요한 정보를 빠짐없이 가져왔나 | O |
+| **ContextPrecision** ✅ (WithReference / WithoutReference) | 쓸모 있는 문서가 위에 있나 | 둘 다 가능 |
+| ContextEntityRecall | 정답 속 **개체명**(사람, 날짜, 기관)이 검색 문서에 있나 | O |
+| ContextRelevance | 검색 문서가 질문과 관련 있나 (가벼운 버전) | X |
+| NoiseSensitivity | **관련 없는 문서 때문에 답이 틀어지는 정도** (k 를 늘렸을 때의 대가) | O |
+
+### RAG 생성 (Generation)
+
+| 지표 | 무엇을 보나 | 정답 필요 |
+|---|---|---|
+| **Faithfulness** ✅ | 답변이 검색 문서에 근거했나 (환각) | X |
+| **AnswerRelevancy** ✅ | 답변이 질문에 맞나 | X |
+| FactualCorrectness | 답변과 정답의 **사실 일치** (`mode`: precision / recall / f1) | O |
+| AnswerCorrectness | 사실 일치 + 의미 유사도를 섞은 종합 점수 | O |
+| AnswerAccuracy · ResponseGroundedness | 정답 일치 · 근거성의 **가벼운 버전** (LLM 호출이 적어 싸고 빠름) | 일부 |
+| SemanticSimilarity | 답변과 정답의 임베딩 유사도 (LLM 없이) | O |
+
+### LLM 없이 계산하는 전통 지표
+
+`BleuScore`, `RougeScore`, `CHRFScore`, `ExactMatch`, `StringPresence`, `NonLLMStringSimilarity`
+→ 싸고 재현성이 높습니다. 정답 문구가 정해진 경우(분류, 추출, 짧은 답)에 적합합니다.
+
+### 특수 목적
+
+| 분야 | 지표 |
+|---|---|
+| 요약 | `SummaryScore`: ch03 요약 체인 평가 |
+| SQL | `SQLSemanticEquivalence`, `DataCompyScore`: sql_query_chain 평가 |
+| 에이전트 / 도구 호출 | `ToolCallAccuracy`, `ToolCallF1`, `AgentGoalAccuracy`, `TopicAdherence` |
+| 직접 기준 정하기 | `RubricsScore`, `InstanceSpecificRubrics`, `DomainSpecificRubrics` (예: “1점 = 근거 없음 … 5점 = 출처까지 명시”) |
+| 멀티모달 | `MultiModalFaithfulness`, `MultiModalRelevance` |
+
+### 다음에 추가하면 좋은 지표 (추천 순서)
+
+1. **FactualCorrectness**: 실습의 4개에는 정답과 답변을 직접 비교하는 지표가 없습니다. “답이 맞았나”를 직접 봅니다.
+2. **NoiseSensitivity**: k·하이브리드 설정을 바꿀 때 잡음의 대가를 숫자로 확인합니다.
+3. **ContextEntityRecall**: 날짜·고유명사가 중요한 문서(SPRi 보고서)에서 Recall 을 보완합니다.
+4. 비용이 부담되면 **가벼운 버전**(AnswerAccuracy, ResponseGroundedness, ContextRelevance)으로 먼저 훑어봅니다.
+
 ## 평가 절차
 
 1. **기준선**: 지금 RAG 로 평가해서 점수 기록
